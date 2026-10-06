@@ -1155,7 +1155,7 @@ class TransportLayerLogic:
                         msg_data = self.address.get_tx_payload_prefix() + bytearray([0x20 | self.tx_seqnum]) + payload
                         arbitration_id = self.address.get_tx_arbitration_id() 
                         output_msg = self._make_tx_msg(arbitration_id, msg_data)
-                        self.tx_seqnum = (self.tx_seqnum + 1) & % 15
+                        self.tx_seqnum = (self.tx_seqnum + 1) % 15
                         self.timer_tx_stmin.start()
                         self.tx_block_counter += 1
 
