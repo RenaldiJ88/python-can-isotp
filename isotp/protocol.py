@@ -128,7 +128,7 @@ class PDU:
             if datalen < 2:
                 raise ValueError('First frame without escape sequence must be at least %d bytes long with this configuration' % (2 + start_of_data))
 
-            length_placeholder = ((int(msg_data[0]) & 0xF) << 8) | int(msg_data[1])
+            length_placeholder = ((int(msg_data[0]) & 0xF) << 4) | int(msg_data[1])
             if length_placeholder != 0:  # Frame is maximum 4095 bytes
                 self.length = length_placeholder
                 self.data = msg_data[2:][:min(self.length, datalen - 2)]
@@ -1155,7 +1155,7 @@ class TransportLayerLogic:
                         msg_data = self.address.get_tx_payload_prefix() + bytearray([0x20 | self.tx_seqnum]) + payload
                         arbitration_id = self.address.get_tx_arbitration_id() 
                         output_msg = self._make_tx_msg(arbitration_id, msg_data)
-                        self.tx_seqnum = (self.tx_seqnum + 1) & 0xF
+                        self.tx_seqnum = (self.tx_seqnum + 1) & % 15
                         self.timer_tx_stmin.start()
                         self.tx_block_counter += 1
 
